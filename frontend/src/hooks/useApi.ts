@@ -43,8 +43,8 @@ export function useDashboard(hospitalId: string = 'H001', days: number = 30) {
   return useQuery({
     queryKey: queryKeys.dashboard(hospitalId),
     queryFn: () => getDashboardSummary(hospitalId, days),
-    refetchInterval: 30000, // Refresh every 30 seconds
-    staleTime: 10000,
+    refetchInterval: false, // Disabled - only refresh on manual click
+    staleTime: 60000, // Data considered fresh for 1 minute
   });
 }
 
@@ -192,8 +192,8 @@ export function useAlerts(hospitalId: string = 'H001') {
   return useQuery({
     queryKey: queryKeys.alerts(hospitalId),
     queryFn: () => getAlerts(hospitalId),
-    refetchInterval: 15000, // Check alerts every 15 seconds
-    staleTime: 5000,
+    refetchInterval: false, // Disabled auto-refresh
+    staleTime: 60000,
   });
 }
 

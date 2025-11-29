@@ -8,7 +8,7 @@ import numpy as np
 from datetime import datetime
 
 
-def generate_data(num_days=30, start_date="2025-01-01", hospital_id="H001"):
+def generate_data(num_days=30, start_date="2025-01-01", hospital_id="H001", seed=42):
     """
     Generate simulated hospital and environmental data with seasonal patterns.
     
@@ -16,10 +16,14 @@ def generate_data(num_days=30, start_date="2025-01-01", hospital_id="H001"):
         num_days (int): Number of days to simulate (default: 30)
         start_date (str): Starting date in YYYY-MM-DD format
         hospital_id (str): Hospital identifier
+        seed (int): Random seed for reproducible data (default: 42)
     
     Returns:
         pd.DataFrame: DataFrame with daily hospital and environmental metrics
     """
+    # Set seed for consistent data
+    np.random.seed(seed)
+    
     dates = pd.date_range(start_date, periods=num_days, freq='D')
     
     # Extract day of year for seasonal calculations

@@ -3,12 +3,16 @@ Real-Time Data API Integration for HospitAI
 Fetches live weather and air quality from OpenWeatherMap.
 """
 
+import logging
 import os
-import requests
 from datetime import datetime
+
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
 DEFAULT_CITY = os.getenv("DEFAULT_CITY", "Delhi")
@@ -48,7 +52,7 @@ def get_weather_data(city=None):
             "source": "🌐 OpenWeatherMap Live"
         }
     except Exception as e:
-        print(f"Weather API error: {e}")
+        logger.warning(f"Weather API error: {e}")
         return _mock_weather_data(city)
 
 
@@ -88,7 +92,7 @@ def get_air_quality(city=None):
             "source": "🌐 OpenWeatherMap Live"
         }
     except Exception as e:
-        print(f"AQI API error: {e}")
+        logger.warning(f"AQI API error: {e}")
         return _mock_aqi_data(city)
 
 
@@ -153,14 +157,9 @@ def check_api_status():
 
 
 if __name__ == "__main__":
-    print("Testing Real Data APIs:\n")
-    
+    logging.basicConfig(level=logging.INFO)
     status = check_api_status()
-    print(f"Status: {status}\n")
-    
-    print("Fetching live data...")
+    logger.info(f"API Status: {status}")
     data = get_realtime_data("Delhi")
-    
-    print(f"\n🌡️ Weather: {data['weather']}")
-    print(f"\n🌫️ Air Quality: {data['air_quality']}")
-    print(f"\n✅ Combined: {data['combined']}")
+    logger.info(f"Weather: {data['weather']}")
+    logger.info(f"Air Quality: {data['air_quality']}")

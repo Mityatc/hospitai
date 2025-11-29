@@ -1,73 +1,67 @@
-# Welcome to your Lovable project
+# HospitAI Frontend
 
-## Project info
+React-based dashboard for the HospitAI hospital surge prediction system.
 
-**URL**: https://lovable.dev/projects/da47a77e-c317-449e-9117-d81928c5ee00
+## Tech Stack
 
-## How can I edit this code?
+- React 18 with TypeScript
+- Vite for build tooling
+- Tailwind CSS for styling
+- shadcn/ui component library
+- Recharts for data visualization
+- React Query for data fetching
 
-There are several ways of editing your application.
+## Development
 
-**Use Lovable**
+```bash
+# Install dependencies
+npm install
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/da47a77e-c317-449e-9117-d81928c5ee00) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+## Environment Variables
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Create a `.env` file:
 
-**Use GitHub Codespaces**
+```
+VITE_API_URL=http://localhost:8000
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+```
+src/
+├── components/     # Reusable UI components
+├── contexts/       # React context providers
+├── hooks/          # Custom React hooks
+├── lib/            # Utility functions
+├── pages/          # Page components
+└── main.tsx        # Application entry point
+```
 
-This project is built with:
+## API Integration
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The frontend connects to the FastAPI backend at the URL specified in `VITE_API_URL`. Key endpoints:
 
-## How can I deploy this project?
+- `/api/dashboard/summary` - Dashboard metrics
+- `/api/predictions` - ML predictions
+- `/api/agent/run` - AI agent analysis
+- `/api/upload` - Data upload
 
-Simply open [Lovable](https://lovable.dev/projects/da47a77e-c317-449e-9117-d81928c5ee00) and click on Share -> Publish.
+## Deployment
 
-## Can I connect a custom domain to my Lovable project?
+Build the production bundle:
 
-Yes, you can!
+```bash
+npm run build
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+The output will be in the `dist/` directory, ready for static hosting.

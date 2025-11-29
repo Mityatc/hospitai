@@ -496,9 +496,16 @@ function ActionCard({
           </div>
           <h4 className="font-semibold mb-1">{action.description}</h4>
           {action.details && Object.keys(action.details).length > 0 && (
-            <p className="text-sm text-muted-foreground mb-2">
-              {JSON.stringify(action.details)}
-            </p>
+            <div className="mt-2 p-3 rounded-md bg-muted/50 text-sm">
+              <div className="grid gap-1">
+                {Object.entries(action.details).map(([key, value]) => (
+                  <div key={key} className="flex items-center gap-2">
+                    <span className="text-muted-foreground capitalize">{key.replace(/_/g, ' ')}:</span>
+                    <span className="font-medium">{String(value)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
 
