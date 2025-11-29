@@ -10,7 +10,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/ - removed because it was ignoring frontend/src/lib/
 lib64/
 parts/
 sdist/
