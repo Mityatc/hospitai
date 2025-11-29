@@ -261,7 +261,18 @@ export async function getAgentLog(): Promise<{ log: any[] }> {
  * Get live environmental data
  */
 export async function getLiveData(city: string = 'Delhi'): Promise<LiveData> {
-  return fetchApi<LiveData>(`/api/live-data?city=${city}`);
+  console.log(`[API] Fetching live weather data for city: ${city}`);
+  console.log(`[API] API URL: ${API_BASE_URL}/api/live-data?city=${city}`);
+  
+  const data = await fetchApi<LiveData>(`/api/live-data?city=${city}`);
+  
+  console.log('[API] Live Weather Data Response:', data);
+  console.log('[API] Weather:', data.weather);
+  console.log('[API] Air Quality:', data.air_quality);
+  console.log('[API] AQI Value:', data.air_quality?.aqi);
+  console.log('[API] PM2.5:', data.air_quality?.pm25);
+  
+  return data;
 }
 
 /**

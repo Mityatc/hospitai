@@ -60,6 +60,21 @@ export default function LiveData() {
   
   const { data: liveData, isLoading, error, refetch } = useLiveData(selectedCity, fetchEnabled);
 
+  // Console log when data changes
+  if (liveData) {
+    console.log('=== LIVE WEATHER DATA ===');
+    console.log('City:', selectedCity);
+    console.log('Full Response:', liveData);
+    console.log('Weather:', liveData.weather);
+    console.log('Temperature:', liveData.weather?.temperature);
+    console.log('Humidity:', liveData.weather?.humidity);
+    console.log('Air Quality:', liveData.air_quality);
+    console.log('AQI:', liveData.air_quality?.aqi);
+    console.log('PM2.5:', liveData.air_quality?.pm25);
+    console.log('PM10:', liveData.air_quality?.pm10);
+    console.log('=========================');
+  }
+
   // Filter cities based on search query
   const filteredCities = useMemo(() => {
     if (!searchQuery) return CITIES;
