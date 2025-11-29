@@ -1,73 +1,181 @@
-# HospitAI
+# HospitAI Dashboard
 
-AI-powered hospital surge prediction and capacity management system.
+AI-powered hospital surge prediction system that forecasts patient influx based on environmental factors and disease trends.
+
+## Overview
+
+HospitAI helps hospitals anticipate patient surges by analyzing:
+- Environmental data (pollution, temperature, humidity)
+- Disease trends (flu cases)
+- Hospital capacity metrics (bed occupancy)
+- AI-powered autonomous agent for proactive decision-making
+
+The system uses both rule-based and ML-based prediction models to provide early warnings and actionable insights.
+
+## Architecture
+
+HospitAI now has two interfaces:
+1. **React Frontend** (Recommended) - Modern, responsive dashboard with real-time updates
+2. **Streamlit Dashboard** (Legacy) - Original Python-based interface
 
 ## Project Structure
 
 ```
-hospitai/
-├── backend/          # FastAPI Python backend
-│   ├── main.py       # API endpoints
-│   ├── ai_agent.py   # AI agent system
-│   └── ...
-├── frontend/         # React TypeScript frontend
+HospitAI/
+├── backend/                    # Python backend
+│   ├── api.py                  # FastAPI backend for React frontend
+│   ├── app.py                  # Streamlit dashboard (legacy)
+│   ├── ai_agent.py             # Autonomous AI agent system
+│   ├── data_generator.py       # Simulates hospital and environmental data
+│   ├── predictor_rulebased.py  # Rule-based surge prediction logic
+│   ├── predictor_ml.py         # ML-based prediction (linear regression)
+│   ├── real_data_api.py        # Live weather/AQI API integration
+│   ├── gpt_module.py           # Google Gemini AI integration
+│   ├── charts.py               # Chart rendering functions
+│   ├── alerts.py               # Alert banner logic
+│   ├── advisories.py           # Patient health advisories
+│   ├── requirements.txt        # Python dependencies
+│   └── .env                    # Environment variables
+├── frontend/                   # React frontend application
 │   ├── src/
-│   └── ...
+│   │   ├── pages/              # Dashboard, AIAgent, Predictions pages
+│   │   ├── components/         # Reusable UI components
+│   │   ├── hooks/              # React Query hooks for API
+│   │   └── lib/                # API service & utilities
+│   ├── package.json
+│   └── .env
 └── README.md
 ```
 
-## Quick Start
+## Installation
 
-### Backend
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- npm or yarn
 
+### Backend Setup
 ```bash
 cd backend
-python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
+
+# Install Python dependencies
 pip install -r requirements.txt
+
+# Create .env file with API keys (optional)
 cp .env.example .env
-# Add your API keys to .env
-uvicorn main:app --reload --port 8000
+# Edit .env and add your API keys:
+# - OPENWEATHER_API_KEY (for live weather data)
+# - GEMINI_API_KEY (for AI analysis)
 ```
 
-### Frontend
-
+### Frontend Setup
 ```bash
 cd frontend
 npm install
-cp .env.example .env
-# Set VITE_API_URL to your backend URL
+```
+
+## Usage
+
+### Manual Start
+
+**Terminal 1 - Backend API:**
+```bash
+cd backend
+python -m uvicorn api:app --reload --port 8000
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd frontend
 npm run dev
 ```
 
-## Deployment
+### Access the Application
+- **Frontend Dashboard**: http://localhost:8080
+- **API Documentation**: http://localhost:8000/docs
+- **API Health Check**: http://localhost:8000
 
-### Backend → Render.com
-
-1. Create new Web Service on Render
-2. Connect GitHub repo
-3. Root Directory: `backend`
-4. Build: `pip install -r requirements.txt`
-5. Start: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-6. Add environment variables
-
-### Frontend → Vercel
-
-1. Import project on Vercel
-2. Root Directory: `frontend`
-3. Framework: Vite
-4. Add `VITE_API_URL` environment variable
+### Legacy Streamlit Dashboard
+```bash
+cd backend
+streamlit run app.py
+```
 
 ## Features
 
-- Real-time hospital capacity monitoring
-- ML-based surge predictions
-- AI agent for automated recommendations
-- Live weather and air quality data
-- CSV/Excel data upload
-- Interactive dashboards
+### Data Upload
+Upload your hospital's real CSV/Excel data to get personalized predictions:
+- Required columns: `date`, `occupied_beds`, `total_beds`
+- Optional: `occupied_icu`, `flu_cases`, `temperature`, `pollution`
+- Missing columns are auto-generated with realistic defaults
+
+### React Dashboard
+- **Dashboard** - Real-time metrics, capacity gauges, trend charts
+- **AI Agent** - Autonomous analysis with approve/reject workflow
+- **Predictions** - ML-based forecasts with confidence intervals
+- **Data Upload** - Import real hospital data
+
+### AI Agent Capabilities
+The autonomous AI agent uses a ReAct architecture:
+1. **PERCEIVE** - Gathers hospital metrics and environmental data
+2. **REASON** - Analyzes patterns and identifies issues
+3. **PLAN** - Generates prioritized action recommendations
+4. **EXECUTE** - Auto-executes safe actions or queues for approval
+
+### Monitored Thresholds
+| Metric | Warning | Critical |
+|--------|---------|----------|
+| Bed Occupancy | 75% | 90% |
+| ICU Occupancy | 70% | 85% |
+| Ventilator Usage | 60% | 80% |
+| Staff Ratio | - | < 0.15 |
+| Air Quality (AQI) | 100 | 150 |
+
+### API Endpoints
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/dashboard/summary` | Complete dashboard data |
+| `GET /api/dashboard/trends` | Historical trend data |
+| `GET /api/predictions` | ML predictions |
+| `POST /api/agent/run` | Run AI agent analysis |
+| `POST /api/agent/approve/{id}` | Approve pending action |
+| `GET /api/alerts` | Current alerts |
+| `GET /api/live-data` | Live environmental data |
+| `POST /api/upload` | Upload hospital data (CSV/Excel) |
+| `GET /api/upload/status` | Check uploaded data status |
+| `DELETE /api/upload/{id}` | Remove uploaded data |
+
+## Configuration
+
+### Backend Environment Variables
+```env
+# backend/.env
+OPENWEATHER_API_KEY=your_key_here
+GEMINI_API_KEY=your_key_here
+```
+
+### Frontend Configuration
+```env
+# frontend/.env
+VITE_API_URL=http://localhost:8000
+```
 
 ## Tech Stack
 
-- **Backend**: FastAPI, Python, scikit-learn, Google Gemini
-- **Frontend**: React, TypeScript, Vite, Tailwind CSS, shadcn/ui
+### Backend
+- Python 3.10+
+- FastAPI
+- Pandas, NumPy, Scikit-learn
+- Google Generative AI (Gemini)
+
+### Frontend
+- React 18 + TypeScript
+- Vite
+- Tailwind CSS
+- Shadcn/ui components
+- Recharts
+- React Query
+
+## License
+
+MIT License - Feel free to use and modify for your needs.

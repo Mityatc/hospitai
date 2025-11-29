@@ -3,78 +3,88 @@
 ## Installation
 
 ```bash
+cd backend
 pip install -r requirements.txt
 ```
 
 ## Configuration
 
-Copy `.env.example` to `.env` and configure:
+Copy `.env.example` to `.env` in the backend folder and configure:
 
 ```bash
-# Required for GPT features
-OPENAI_API_KEY=your-openai-api-key
-
-# Optional: Remote ML inference
-REMOTE_MODE=false
-REMOTE_URL=https://api.pipeshift.ai/hospitai
-PIPESHIFT_TOKEN=your-token
+cd backend
+cp .env.example .env
 ```
 
-## Running the Dashboard
+Edit `.env`:
+```env
+# Required for AI features
+GEMINI_API_KEY=your-gemini-api-key
+
+# Optional: Live weather data
+OPENWEATHER_API_KEY=your-openweather-key
+```
+
+## Running the Application
+
+### Option 1: Full Stack (Recommended)
+
+**Terminal 1 - Backend API:**
+```bash
+cd backend
+python -m uvicorn api:app --reload --port 8000
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Access at:
+- Frontend: http://localhost:8080
+- API Docs: http://localhost:8000/docs
+
+### Option 2: Streamlit Dashboard (Legacy)
 
 ```bash
+cd backend
 python -m streamlit run app.py
 ```
 
 Opens at `http://localhost:8501`
 
-## Dashboard Tabs
+## Dashboard Features
 
-| Tab | Description |
-|-----|-------------|
-| 📊 Summary | Current metrics, capacity gauges, risk score |
+| Feature | Description |
+|---------|-------------|
+| 📊 Dashboard | Current metrics, capacity gauges, risk score |
 | 📈 Trends | Historical charts, environmental data |
-| 🔮 Predictions | ML-based forecasts (local or Pipeshift) |
+| 🔮 Predictions | ML-based forecasts |
+| 🤖 AI Agent | Autonomous analysis & recommendations |
+| 📤 Data Upload | Import real hospital CSV/Excel data |
 | 🎯 Scenarios | What-if simulator (flu, pollution, etc.) |
-| 🏥 Compare | Multi-hospital comparison |
-| 📥 Export | CSV, reports, GPT summaries |
 
-## Features
+## Data Upload
 
-### Core
-- Seasonal data patterns (winter flu peaks, weekend effects)
-- 6-factor risk scoring
-- Resource tracking (ICU, ventilators, staff, meds)
+Upload your hospital's real data:
+- **Required**: `date`, `occupied_beds`, `total_beds`
+- **Optional**: `occupied_icu`, `flu_cases`, `temperature`, `pollution`
 
-### AI Integration
-- **OpenAI GPT**: Admin reports, patient advisories
-- **Pipeshift**: Remote ML inference endpoint
-
-### Scenarios
-- 🤒 Flu Outbreak
-- 🌫️ Pollution Spike
-- 🚨 Mass Casualty
-- 👥 Staff Shortage
-- 🔧 Equipment Failure
-- 🌡️ Heatwave
-
-## Optional Enhancements
-
-| File | Requires |
-|------|----------|
-| `gpt_module.py` | `OPENAI_API_KEY` in `.env` |
-| Remote inference | `REMOTE_URL` + `PIPESHIFT_TOKEN` in `.env` |
+Missing columns are auto-generated with realistic defaults.
 
 ## Testing
 
 ```bash
+cd backend
 python run_app.py      # Full test suite
 python test_quick.py   # Quick verification
 ```
 
 ## Troubleshooting
 
-- **Module errors**: Ensure all files in same directory
+- **Module errors**: Run commands from `backend/` directory
 - **Streamlit not found**: `pip install streamlit`
-- **GPT not working**: Check `OPENAI_API_KEY` in `.env`
-- **Remote inference fails**: Falls back to local automatically
+- **AI not working**: Check `GEMINI_API_KEY` in `backend/.env`
+- **Frontend errors**: Run `npm install` in `frontend/`
